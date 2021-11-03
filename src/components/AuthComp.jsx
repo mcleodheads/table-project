@@ -99,7 +99,7 @@ const AuthComp = () => {
                             <Message color={'red'}>
                                 {
                                     error === 'login/rejected' ? (
-                                        'Введенный вами логин или пароль не связан ни с одним аккаунтом'
+                                        `${t('UserNotFound')}`
                                     ) : error
                                 }
                             </Message>
