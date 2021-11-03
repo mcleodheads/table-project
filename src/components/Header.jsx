@@ -1,33 +1,41 @@
 import React from 'react';
-import {Menu} from "semantic-ui-react";
 import {useDispatch} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {useTranslation} from "react-i18next";
+import i18next from "i18next";
+import Cookies from 'js-cookie'
+
 import {logoutRequest} from "../store/reducers/userAuthReducer";
 import {HOME_ROUTE} from "../routes/routeConstants";
-import {useHistory} from "react-router-dom";
+import {countryFlags} from "./AuthComp";
+
+import {Dropdown, Menu} from "semantic-ui-react";
 
 const Header = () => {
     const dispatch = useDispatch()
     const history = useHistory()
+    const {t} = useTranslation()
 
     const handleSignOut = () => {
         dispatch(logoutRequest())
     }
 
+    const handleLangChange = (e, data) => {
+        console.log(data.value)
+        i18next.changeLanguage(data.value)
+    }
+
     return (
-            <Menu>
+        <Menu pointing>
+            <Menu.Menu position={'right'}>
+                <Dropdown item placeholder={Cookies.get('i18next')} options={countryFlags} onChange={handleLangChange}/>
                 <Menu.Item
-                    position={'left'}
-                    name={'Home'}
-                    content={'Home'}
-                    onClick={() => history.push(HOME_ROUTE)}
-                />
-                <Menu.Item
-                    position={'right'}
-                    name={'LogOut'}
-                    content={'Log out'}
+                    name={`${t('exit')}`}
+                    content={`${t('exit')}`}
                     onClick={() => handleSignOut()}
                 />
-            </Menu>
+            </Menu.Menu>
+        </Menu>
     );
 };
 

@@ -5,6 +5,6 @@ axios.interceptors.request.use(config => {
     return config
 })
 
-export async function userLogin(login, password, language) {
-    return axios.post('/api/identity/login', {login, password, language}, {withCredentials: true})
+export async function userLogin(login, password, country) {
+    return axios.post('/api/identity/login', {login, password, language: country}, {withCredentials: true})
 }

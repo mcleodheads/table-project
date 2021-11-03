@@ -10,9 +10,9 @@ export const checkAuth = createAction('userAuth/checkAuth')
 
 export const loginRequest = createAsyncThunk(
     'login',
-    async ({login, password, language = 'english'}, thunkAPI) => {
+    async ({login, password, country = 'en'}, thunkAPI) => {
         try {
-            const response = await userLogin(login, password, language)
+            const response = await userLogin(login, password, country)
             return thunkAPI.dispatch(loginReducer(response))
         } catch (e) {
             return thunkAPI.rejectWithValue(e.message)
