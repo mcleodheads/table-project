@@ -40,8 +40,8 @@ const Header = () => {
                 />
                 <Menu.Item
                     position={'left'}
-                    name={`${t('information')}`}
-                    content={`${t('information')}`}
+                    name={`${t('users')}`}
+                    content={`${t('users')}`}
                     onClick={() => history.push(TABLE_ROUTE)}
                 />
             </Menu.Menu>

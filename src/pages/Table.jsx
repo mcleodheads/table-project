@@ -1,8 +1,8 @@
 import React from 'react';
-import TableComp from "../components/TableComp";
+import TableComponent from "../components/TableComponent";
 
 const Table = () => {
-    return <TableComp />
+    return <TableComponent />
 };
 
 export default Table;
