@@ -8,7 +8,7 @@ import Cookies from 'js-cookie'
 import {HOME_ROUTE} from "../routes/routeConstants";
 import {loginRequest} from "../store/reducers/userAuthReducer";
 
-import {Dimmer, Dropdown, Form, Grid, Header, Message, Segment} from "semantic-ui-react";
+import {Dimmer, Form, Grid, Header, Message, Segment} from "semantic-ui-react";
 
 export const countryFlags = [
     {key: 'gb eng', value: 'en', flag: 'gb eng', text: 'English'},

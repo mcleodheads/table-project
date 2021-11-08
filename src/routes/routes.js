@@ -1,6 +1,7 @@
-import {HOME_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from "./routeConstants";
+import {HOME_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, TABLE_ROUTE} from "./routeConstants";
 import Home from "../pages/Home";
 import Authorization from "../pages/Authorization";
+import Table from "../pages/Table";
 
 export const publicRoutes = [
     {
@@ -17,5 +18,9 @@ export const authRoutes = [
     {
         path: HOME_ROUTE,
         component: Home,
+    },
+    {
+        path: TABLE_ROUTE,
+        component: Table,
     },
 ]
