@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {useTranslation} from "react-i18next";
@@ -17,8 +17,8 @@ const Header = () => {
     const history = useHistory()
     const {t} = useTranslation()
 
-    React.useEffect(() => {
-        axios.get('/api/translation/GetForLangType/en').then(resp => console.log(resp))
+    useEffect(() => {
+        axios.get('/api/translation/GetForLangType/en').then(data => console.log(data))
     }, [])
 
     const handleSignOut = () => {
@@ -31,15 +31,8 @@ const Header = () => {
 
     return (
         <Menu pointing>
-            <Menu.Menu>
+            <Menu.Menu position={'left'}>
                 <Menu.Item
-                    position={'left'}
-                    name={`${t('AddButton')}`}
-                    content={`${t('AddButton')}`}
-                    onClick={() => history.push(HOME_ROUTE)}
-                />
-                <Menu.Item
-                    position={'left'}
                     name={`${t('users')}`}
                     content={`${t('users')}`}
                     onClick={() => history.push(TABLE_ROUTE)}
