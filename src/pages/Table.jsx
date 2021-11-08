@@ -1,8 +1,9 @@
 import React from 'react';
+import {Grid, Segment} from "semantic-ui-react";
+import {useSelector} from "react-redux";
+
 import TableComponent from "../components/TableComponent";
 import SettingsConfigurations from "../components/SettingsConfigurations";
-import {Grid} from "semantic-ui-react";
-import {useSelector} from "react-redux";
 
 const Table = () => {
     const {chosenConfig} = useSelector(state => state.configReducer)
@@ -10,7 +11,9 @@ const Table = () => {
         <Grid>
             <Grid.Row>
                 <Grid.Column width={4}>
-                    <TableComponent/>
+                    <Segment>
+                        <TableComponent/>
+                    </Segment>
                 </Grid.Column>
                 <Grid.Column width={11}>
                         {
