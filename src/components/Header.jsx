@@ -6,7 +6,7 @@ import i18next from "i18next";
 import Cookies from 'js-cookie'
 
 import {logoutRequest} from "../store/reducers/userAuthReducer";
-import {HOME_ROUTE, TABLE_ROUTE} from "../routes/routeConstants";
+import {TABLE_ROUTE} from "../routes/routeConstants";
 import {countryFlags} from "./AuthComp";
 
 import {Dropdown, Menu} from "semantic-ui-react";

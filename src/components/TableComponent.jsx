@@ -3,11 +3,9 @@ import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 
-import {config} from "../mock/data";
-
 import {getConfig, setChosenField} from "../store/reducers/configurationReducer";
 
-import {Button, Dimmer, Loader, Segment, Table} from "semantic-ui-react";
+import {Button, Dimmer, Dropdown, Loader, Segment, Table} from "semantic-ui-react";
 
 const TableComponent = () => {
     const [headers, setHeaders] = useState([])
@@ -49,26 +47,32 @@ const TableComponent = () => {
 
     if (configuration.isLoading) {
         return (
-            <Dimmer active inverted>
-                <Loader>{`${t('data_loading')}`}...</Loader>
-            </Dimmer>
+            <Segment>
+                <Dimmer active inverted>
+                    <Loader>{`${t('data_loading')}`}...</Loader>
+                </Dimmer>
+            </Segment>
         )
     }
 
     return (
-        <Segment.Group>
-            {
-                configuration.config.map(header => (
-                    <Segment key={header.name}>
-                            <Button
-                                fluid
-                                onClick={() => dispatch(setChosenField(header))}
-                                content={`${t(header.name)}`}
-                            />
-                    </Segment>
-                ))
-            }
-        </Segment.Group>
+        <Table>
+            <Table.Body>
+                {
+                    configuration.config.map(header => (
+                        <Table.Row key={header.name}>
+                            <Table.Cell>
+                                <Button
+                                    fluid
+                                    onClick={() => dispatch(setChosenField(header))}
+                                    content={`${t(header.name)}`}
+                                />
+                            </Table.Cell>
+                        </Table.Row>
+                    ))
+                }
+            </Table.Body>
+        </Table>
     );
 };
 
