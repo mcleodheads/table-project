@@ -6,27 +6,45 @@ import i18next from "i18next";
 import Cookies from 'js-cookie'
 
 import {logoutRequest} from "../store/reducers/userAuthReducer";
-import {HOME_ROUTE} from "../routes/routeConstants";
+import {HOME_ROUTE, TABLE_ROUTE} from "../routes/routeConstants";
 import {countryFlags} from "./AuthComp";
 
 import {Dropdown, Menu} from "semantic-ui-react";
+import axios from "axios";
 
 const Header = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const {t} = useTranslation()
 
+    React.useEffect(() => {
+        axios.get('/api/translation/GetForLangType/en').then(resp => console.log(resp))
+    }, [])
+
     const handleSignOut = () => {
         dispatch(logoutRequest())
     }
 
     const handleLangChange = (e, data) => {
-        console.log(data.value)
         i18next.changeLanguage(data.value)
     }
 
     return (
         <Menu pointing>
+            <Menu.Menu>
+                <Menu.Item
+                    position={'left'}
+                    name={`${t('AddButton')}`}
+                    content={`${t('AddButton')}`}
+                    onClick={() => history.push(HOME_ROUTE)}
+                />
+                <Menu.Item
+                    position={'left'}
+                    name={`${t('information')}`}
+                    content={`${t('information')}`}
+                    onClick={() => history.push(TABLE_ROUTE)}
+                />
+            </Menu.Menu>
             <Menu.Menu position={'right'}>
                 <Dropdown item placeholder={Cookies.get('i18next')} options={countryFlags} onChange={handleLangChange}/>
                 <Menu.Item

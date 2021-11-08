@@ -1,7 +1,5 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {useTranslation} from "react-i18next";
-import axios from "axios";
 
 import {checkAuth} from "./store/reducers/userAuthReducer";
 import AppRoute from "./routes/AppRoute";
@@ -18,10 +16,6 @@ const App = () => {
             dispatch(checkAuth())
         }
     }, [localStorage.getItem('token')])
-
-    useEffect(() => {
-        axios.get('/api/translation/GetForLangType/en').then(data => console.log(data))
-    }, [isAuth])
 
     return (
         <Grid>
