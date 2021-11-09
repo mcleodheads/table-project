@@ -29,7 +29,7 @@ export const configurationSlice = createSlice({
         },
         setChosenField(state, action) {
             state.chosenConfig = [action.payload]
-        }
+        },
     },
     extraReducers: {
         [getConfig.pending]: (state) => {
@@ -45,5 +45,5 @@ export const configurationSlice = createSlice({
     }
 })
 
-export const {fetchConfigReducer, setChosenField} = configurationSlice.actions
+export const {fetchConfigReducer, setChosenField, settingsDnD} = configurationSlice.actions
 export default configurationSlice.reducer
