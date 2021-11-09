@@ -9,23 +9,7 @@ import {settingsDnD} from "../store/reducers/configurationReducer";
 
 const SettingsConfigurations = () => {
     const configuration = useSelector(state => state.configReducer)
-    const dispatch = useDispatch()
     const {t} = useTranslation()
-    console.log(configuration)
-
-    const onDragEnd = result => {
-        const {destination, source, draggableId} = result
-        if (!destination) {
-            return
-        }
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        ) {
-            return;
-        }
-        dispatch(settingsDnD(result))
-    }
 
     if (configuration.isLoading) {
         return <Loader>{`${t('data_loading')}`}</Loader>
