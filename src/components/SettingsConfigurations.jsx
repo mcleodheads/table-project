@@ -1,11 +1,8 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 
-import {Button, Checkbox, Icon, Input, Loader, Ref, Segment, Select, Table} from "semantic-ui-react";
-import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
-import {settingsDnD} from "../store/reducers/configurationReducer";
-
+import {Button, Checkbox, Input, Loader, Segment, Select, Table} from "semantic-ui-react";
 
 const SettingsConfigurations = () => {
     const configuration = useSelector(state => state.configReducer)

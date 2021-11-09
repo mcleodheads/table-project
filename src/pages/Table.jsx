@@ -1,9 +1,10 @@
 import React from 'react';
-import {Grid, Segment} from "semantic-ui-react";
 import {useSelector} from "react-redux";
 
 import TableComponent from "../components/TableComponent";
 import SettingsConfigurations from "../components/SettingsConfigurations";
+
+import {Grid, Segment} from "semantic-ui-react";
 
 const Table = () => {
     const {chosenConfig} = useSelector(state => state.configReducer)

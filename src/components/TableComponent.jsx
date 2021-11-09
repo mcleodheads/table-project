@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 
 import {getConfig, setChosenField} from "../store/reducers/configurationReducer";
 
-import {Button, Dimmer, Dropdown, Loader, Segment, Table} from "semantic-ui-react";
+import {Button, Dimmer, Loader, Segment, Table} from "semantic-ui-react";
 
 const TableComponent = () => {
     const [headers, setHeaders] = useState([])
