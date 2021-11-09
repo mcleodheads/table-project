@@ -1,14 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 
 import {getConfig, setChosenField} from "../store/reducers/configurationReducer";
 
-import {Button, Dimmer, Loader, Segment, Table} from "semantic-ui-react";
+import {Button, Dimmer, Dropdown, Icon, Loader, Table} from "semantic-ui-react";
 
 const TableComponent = () => {
-    const [headers, setHeaders] = useState([])
-    const [isBlur, setBlur] = useState(false)
     const dispatch = useDispatch()
     const configuration = useSelector(state => state.configReducer)
     const {t} = useTranslation()
@@ -17,66 +15,68 @@ const TableComponent = () => {
         dispatch(getConfig())
     }, [])
 
-    const handleGetCol = (e, data) => {
-        const {value} = data
-        setHeaders(value)
-    }
-
-    const onDragEnd = (result) => {
-        const {destination, source, draggableId} = result
-        if (!destination) {
-            setBlur(false)
-            return
-        }
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        ) {
-            setBlur(false)
-            return;
-        }
-        const colHeader = headers[source.index]
-        setHeaders(prev => {
-            prev.splice(source.index, 1)
-            prev.splice(destination.index, 0, colHeader)
-            return prev
-        })
-        setBlur(false)
-    }
 
     if (configuration.isLoading) {
         return (
-            <Segment>
-                <Dimmer active inverted>
-                    <Loader>{`${t('data_loading')}`}...</Loader>
-                </Dimmer>
-            </Segment>
+            <Dimmer active inverted>
+                <Loader>{`${t('data_loading')}`}...</Loader>
+            </Dimmer>
         )
     }
-
     return (
-        <Table>
-            <Table.Body>
+        <Dropdown
+            floating
+            labeled
+            button
+            className={'icon'}
+            closeOnBlur
+            trigger={(<span>{t('Permission.FieldsSettings')} <Icon name={'filter'} /></span>)}
+            scrolling
+            >
+            <Dropdown.Menu>
                 {
                     configuration.config.map(header => (
-                        <Table.Row key={header.name}>
-                            <Table.Cell>
-                                <Button
-                                    fluid
-                                    onClick={() => dispatch(setChosenField(header))}
-                                    content={`${t(header.name)}`}
-                                />
-                            </Table.Cell>
-                        </Table.Row>
+                        <Dropdown.Item
+                            onClick={() => dispatch(setChosenField(header))}
+                            text={`${t(header.name)}`}
+                            key={header.name}
+                            value={`${t(header.name)}`}
+                        />
                     ))
                 }
-            </Table.Body>
-        </Table>
-    );
+            </Dropdown.Menu>
+        </Dropdown>
+    )
+
+
 };
 
 export default TableComponent;
 
+
+// const handleGetCol = (e, data) => {
+//     const {value} = data
+//     setHeaders(value)
+// }
+//
+// const onDragEnd = (result) => {
+//     const {destination, source, draggableId} = result
+//     if (!destination) {
+//         return
+//     }
+//     if (
+//         destination.droppableId === source.droppableId &&
+//         destination.index === source.index
+//     ) {
+//         return;
+//     }
+//     const colHeader = headers[source.index]
+//     setHeaders(prev => {
+//         prev.splice(source.index, 1)
+//         prev.splice(destination.index, 0, colHeader)
+//         return prev
+//     })
+// }
 // <Segment>
 //     <Dropdown
 //         placeholder='Columns'

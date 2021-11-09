@@ -11,6 +11,7 @@ import {TABLE_ROUTE} from "../routes/routeConstants";
 import {countryFlags} from "./AuthComp";
 
 import {Dropdown, Menu} from "semantic-ui-react";
+import {settingsDnD} from "../store/reducers/configurationReducer";
 
 const Header = () => {
     const dispatch = useDispatch()

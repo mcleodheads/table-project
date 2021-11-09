@@ -20,10 +20,10 @@ const AuthComp = () => {
     const [password, setPassword] = useState('');
     const [country, setCountry] = useState('');
     const [isEmptyFields, setEmptyFields] = useState(false);
-    const history = useHistory()
+    const history = useHistory();
     const dispatch = useDispatch();
-    const {t} = useTranslation()
-    const {isLoading, error, isAuth} = useSelector(state => state.authReducer)
+    const {t} = useTranslation();
+    const {isLoading, error, isAuth} = useSelector(state => state.authReducer);
 
     useEffect(() => {
         if (isAuth) {

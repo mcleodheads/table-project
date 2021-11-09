@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 
 import {Button, Checkbox, Input, Loader, Segment, Select, Table} from "semantic-ui-react";
 
 const SettingsConfigurations = () => {
+    const [initialWidth, setWidth] = useState(3);
     const configuration = useSelector(state => state.configReducer)
     const {t} = useTranslation()
+
+    const DragHeaderCell = (e) => {
+        return console.log(e.clientX, e.clientY)
+    }
 
     if (configuration.isLoading) {
         return <Loader>{`${t('data_loading')}`}</Loader>
@@ -15,10 +20,14 @@ const SettingsConfigurations = () => {
     return (
         <Segment>
             {configuration.chosenConfig.map(setting => (
-                <Table celled key={setting.name}>
+                <Table
+                    singleLine
+                    celled
+                    fixed
+                    key={setting.name}>
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell width={4}>
+                            <Table.HeaderCell onMouseDown={e => DragHeaderCell(e)} width={initialWidth}>
                                 {`${t(setting.name)}`}
                             </Table.HeaderCell>
                             <Table.HeaderCell>
@@ -27,7 +36,7 @@ const SettingsConfigurations = () => {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {setting.columns.map((item, index) => (
+                        {setting.columns.map(item => (
                             <Table.Row key={item.displayNameKey}>
                                 <Table.Cell>
                                     {t(item.displayNameKey)}

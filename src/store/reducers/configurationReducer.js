@@ -45,5 +45,5 @@ export const configurationSlice = createSlice({
     }
 })
 
-export const {fetchConfigReducer, setChosenField, settingsDnD} = configurationSlice.actions
+export const {fetchConfigReducer, setChosenField} = configurationSlice.actions
 export default configurationSlice.reducer

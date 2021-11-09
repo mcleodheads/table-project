@@ -1,4 +1,4 @@
-import {createAction, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {userLogin} from "../../API/API";
 
 const initialState = {
@@ -6,14 +6,15 @@ const initialState = {
     isLoading: false,
     error: ''
 }
-export const checkAuth = createAction('userAuth/checkAuth')
 
 export const loginRequest = createAsyncThunk(
     'login',
     async ({login, password, country = 'en'}, thunkAPI) => {
         try {
             const response = await userLogin(login, password, country)
+            localStorage.setItem('token', response.data.accessToken)
             return thunkAPI.dispatch(loginReducer(response))
+
         } catch (e) {
             return thunkAPI.rejectWithValue(e.message)
         }
@@ -24,6 +25,7 @@ export const logoutRequest = createAsyncThunk(
     'logout',
     async (_, thunkAPI) => {
         try {
+            localStorage.removeItem('token')
             return thunkAPI.dispatch(logoutReducer())
         } catch (e) {
             return thunkAPI.rejectWithValue(e.message)
@@ -35,12 +37,11 @@ const userAuthSlice = createSlice({
     name: 'userAuth',
     initialState,
     reducers: {
-        loginReducer(state, action) {
-            localStorage.setItem('token', action.payload.data.accessToken)
+        loginReducer() {
+            return
         },
-        logoutReducer(state) {
-            localStorage.removeItem('token')
-            state.isAuth = false
+        logoutReducer() {
+            return
         },
         checkAuth(state) {
             state.isAuth = true
@@ -58,8 +59,11 @@ const userAuthSlice = createSlice({
             state.error = action.type
             state.isLoading = false
         },
+        [logoutRequest.fulfilled]: (state) => {
+            state.isAuth = false
+        },
     },
 })
 
-const {loginReducer, logoutReducer} = userAuthSlice.actions
+export const {loginReducer, logoutReducer, checkAuth} = userAuthSlice.actions
 export default userAuthSlice.reducer
