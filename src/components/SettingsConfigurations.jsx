@@ -1,81 +1,176 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 
-import {Button, Checkbox, Input, Loader, Segment, Select, Table} from "semantic-ui-react";
+import {Button, Checkbox, Divider, Input, Item, Loader, Segment, Select, Table} from "semantic-ui-react";
+import {useTable, useBlockLayout, useResizeColumns, useFlexLayout, useColumnOrder} from "react-table";
 
 const SettingsConfigurations = () => {
-    const [initialWidth, setWidth] = useState(3);
-    const configuration = useSelector(state => state.configReducer)
-    const {t} = useTranslation()
+    const configuration = useSelector(state => state.configReducer);
+    const {t} = useTranslation();
 
-    const DragHeaderCell = (e) => {
-        return console.log(e.clientX, e.clientY)
-    }
+    const columns = useMemo(() => [
+        {
+            Header: `${t(configuration.chosenConfig[0].name)}`,
+            accessor: 'subheader'
+        },
+        {
+            Header: `${t('Permission.FieldsSettings')}`,
+            accessor: 'inputType'
+        }
+    ], [configuration, `${t('Permission.FieldsSettings')}`])
+
+    const data = useMemo(() => configuration.chosenConfig[0].columns.map(item => ({
+        subheader: {
+            subheader: `${t(item.name)}`,
+            required: item.isRequired,
+        },
+        inputType: item.type,
+        required: item.isRequired,
+        accessor: item.displayNameKey
+    })), [configuration, `${t('Permission.FieldsSettings')}`])
+
+    const defaultColumn = React.useMemo(
+        () => ({
+            minWidth: Math.round(window.innerWidth * (20 / 100)),
+            width: Math.round(window.innerWidth * (49 / 100)),
+            maxWidth: Math.round(window.innerWidth * (49 / 100)),
+        }),
+        []
+    );
+
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+        state,
+    } = useTable(
+        {
+            columns,
+            data,
+            defaultColumn
+        },
+        useBlockLayout,
+        useResizeColumns,
+    );
 
     if (configuration.isLoading) {
         return <Loader>{`${t('data_loading')}`}</Loader>
     }
 
+
     return (
         <Segment>
             {configuration.chosenConfig.map(setting => (
                 <Table
+                    style={{resize: 'true'}}
                     singleLine
+                    compact
                     celled
-                    fixed
-                    key={setting.name}>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell onMouseDown={e => DragHeaderCell(e)} width={initialWidth}>
-                                {`${t(setting.name)}`}
-                            </Table.HeaderCell>
-                            <Table.HeaderCell>
-                                {`${t('Permission.FieldsSettings')}`}
-                            </Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {setting.columns.map(item => (
-                            <Table.Row key={item.displayNameKey}>
-                                <Table.Cell>
-                                    {t(item.displayNameKey)}
+                    key={setting.name}
+                    {...getTableProps()}>
+                    <Table.Header
+                        style={{userSelect: 'none',}}
+                    >
+                        {
+                            headerGroups.map(headerGroup => (
+                                <Table.Row
+                                    {...headerGroup.getHeaderGroupProps()}
+                                    style={{minWidth: '100%'}}>
                                     {
-                                        item.isRequired ? (
-                                            <span style={{fontSize: '20px', color: 'red'}}> *</span>
-                                        ) : null
+                                        headerGroup.headers.map(col => {
+                                            return (
+                                                <Table.HeaderCell
+                                                    {...col.getHeaderProps()}>
+                                                    {col.render('Header')}
+                                                    <Divider
+                                                        {...col.getResizerProps()}
+                                                        style={{
+                                                            display: 'inline-block',
+                                                            width: 10,
+                                                            marginTop: -1,
+                                                            height: '100%',
+                                                            position: 'absolute',
+                                                            right: 0,
+                                                            top: 0,
+                                                            transform: 'translateX(50%)',
+                                                            zIndex: 1,
+                                                            touchAction: 'none',
+                                                            cursor: 'col-resize'
+                                                        }}
+                                                    />
+                                                </Table.HeaderCell>
+                                            )
+                                        })
                                     }
-                                </Table.Cell>
-                                {
-                                    item.type === 'Boolean' ? (
-                                        <Table.Cell style={{marginTop: '1rem'}}>
-                                            <Checkbox toggle/>
-                                        </Table.Cell>
-                                    ) : (
-                                        item.type === 'Select' ? (
-                                            <Table.Cell>
-                                                <Select
-                                                    options={[
+                                </Table.Row>
+                            ))
+                        }
+                    </Table.Header>
+                    <Table.Body  {...getTableBodyProps()}>
+                        {
+                            rows.map(row => {
+                                prepareRow(row)
+                                return (
+                                    <Table.Row style={{width: '100%'}} {...row.getRowProps()}>
+                                        {
+                                            row.cells.map(cell => {
+                                                return (
+                                                    <Table.Cell style={{width: '100%'}} width={16} {...cell.getCellProps()}>
                                                         {
-                                                            key: '1',
-                                                            value: '1',
-                                                            text: '1',
-                                                        }, {
-                                                            key: '2',
-                                                            value: '2',
-                                                            text: '2',
-                                                        },
-                                                    ]} fluid/>
-                                            </Table.Cell>
-                                        ) : (
-                                            <Table.Cell>
-                                                <Input fluid type={item.type}/>
-                                            </Table.Cell>
-                                        )
-                                    )
-                                }
-                            </Table.Row>
-                        ))}
+                                                            cell.getCellProps().key.includes('inputType') ? (
+                                                                cell.value === 'Boolean' ? (
+                                                                    <Segment compact floated={'right'}>
+                                                                        <Checkbox toggle/>
+                                                                    </Segment>
+                                                                ) : (
+                                                                    cell.value === 'Select' ? (
+                                                                        <Select fluid options={[{}, {}]}/>
+                                                                    ) : (
+                                                                        cell.value === 'Enum' ? (
+                                                                            <Input fluid type={'number'}/>
+                                                                        ) : (
+                                                                            <Input fluid type={cell.value}/>
+                                                                        )
+                                                                    )
+                                                                )
+                                                            ) : (
+                                                                <Item>
+                                                                    {
+                                                                        cell.value.required ? (
+                                                                            <>
+                                                                                {
+                                                                                    cell.value.subheader
+                                                                                }
+                                                                                <span
+                                                                                    style={{
+                                                                                        fontSize: 22,
+                                                                                        color: 'red'
+                                                                                    }}>
+                                                                                    *
+                                                                                </span>
+                                                                            </>
+                                                                        ) : (
+                                                                            <>
+                                                                                {
+                                                                                    cell.value.subheader
+                                                                                }
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                </Item>
+                                                            )
+                                                        }
+                                                    </Table.Cell>
+                                                )
+                                            })
+                                        }
+                                    </Table.Row>
+                                )
+                            })
+                        }
                     </Table.Body>
                 </Table>
             ))}

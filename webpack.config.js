@@ -9,7 +9,9 @@ module.exports = {
     resolve: {
         extensions: [".js", ".jsx", ".css"],
         alias: {
-            style: path.resolve(__dirname, 'src', 'assets', 'styles')
+            style: path.resolve(__dirname, 'src', 'assets', 'styles'),
+            "react/jsx-dev-runtime": "react/jsx-dev-runtime.js",
+            "react/jsx-runtime": "react/jsx-runtime.js"
         }
     },
     devServer: {

@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {userLogin} from "../../API/API";
 
 const initialState = {
-    isAuth: false,
+    isAuth: !!localStorage.getItem('token'),
     isLoading: false,
     error: ''
 }

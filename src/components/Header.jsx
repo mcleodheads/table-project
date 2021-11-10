@@ -18,9 +18,9 @@ const Header = () => {
     const history = useHistory()
     const {t} = useTranslation()
 
-    useEffect(() => {
-        axios.get('/api/translation/GetForLangType/en').then(data => console.log(data))
-    }, [])
+    // useEffect(() => {
+    //     axios.get('/api/translation/GetForLangType/en').then(data => console.log(data))
+    // }, [])
 
     const handleSignOut = () => {
         dispatch(logoutRequest())
