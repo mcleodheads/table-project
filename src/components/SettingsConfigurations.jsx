@@ -1,9 +1,10 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 
 import {Button, Checkbox, Divider, Input, Item, Loader, Segment, Select, Table} from "semantic-ui-react";
-import {useTable, useBlockLayout, useResizeColumns, useFlexLayout, useColumnOrder} from "react-table";
+import {useTable, useResizeColumns} from "react-table";
+import {useFlexLayout} from "react-table/src/plugin-hooks/useFlexLayout";
 
 const SettingsConfigurations = () => {
     const configuration = useSelector(state => state.configReducer);
@@ -45,15 +46,14 @@ const SettingsConfigurations = () => {
         headerGroups,
         rows,
         prepareRow,
-        state,
     } = useTable(
         {
             columns,
             data,
             defaultColumn
         },
-        useBlockLayout,
         useResizeColumns,
+        useFlexLayout
     );
 
     if (configuration.isLoading) {
@@ -65,9 +65,8 @@ const SettingsConfigurations = () => {
         <Segment>
             {configuration.chosenConfig.map(setting => (
                 <Table
-                    style={{resize: 'true'}}
-                    singleLine
                     compact
+                    basic
                     celled
                     key={setting.name}
                     {...getTableProps()}>
@@ -76,9 +75,7 @@ const SettingsConfigurations = () => {
                     >
                         {
                             headerGroups.map(headerGroup => (
-                                <Table.Row
-                                    {...headerGroup.getHeaderGroupProps()}
-                                    style={{minWidth: '100%'}}>
+                                <Table.Row {...headerGroup.getHeaderGroupProps()}>
                                     {
                                         headerGroup.headers.map(col => {
                                             return (
@@ -118,7 +115,7 @@ const SettingsConfigurations = () => {
                                         {
                                             row.cells.map(cell => {
                                                 return (
-                                                    <Table.Cell style={{width: '100%'}} width={16} {...cell.getCellProps()}>
+                                                    <Table.Cell {...cell.getCellProps()}>
                                                         {
                                                             cell.getCellProps().key.includes('inputType') ? (
                                                                 cell.value === 'Boolean' ? (
@@ -127,7 +124,7 @@ const SettingsConfigurations = () => {
                                                                     </Segment>
                                                                 ) : (
                                                                     cell.value === 'Select' ? (
-                                                                        <Select fluid options={[{}, {}]}/>
+                                                                        <Select fluid/>
                                                                     ) : (
                                                                         cell.value === 'Enum' ? (
                                                                             <Input fluid type={'number'}/>
