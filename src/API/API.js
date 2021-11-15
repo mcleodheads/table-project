@@ -12,3 +12,15 @@ export async function userLogin(login, password, country) {
 export async function fetchAppConfiguration() {
     return axios.get('/api/appConfiguration', {withCredentials: true})
 }
+
+export async function fetchSearchResults(name) {
+    const data = {
+        filter: {},
+        sort: {},
+    }
+    return axios.post(`/api/${name}/search`, data, {withCredentials: true})
+}
+
+export async function fetchModalData(name, id) {
+    return axios.get(`/api/${name}/getById/${id}`, {withCredentials: true})
+}
