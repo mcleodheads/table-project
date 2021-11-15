@@ -11,16 +11,15 @@ import {TABLE_ROUTE} from "../routes/routeConstants";
 import {countryFlags} from "./AuthComp";
 
 import {Dropdown, Menu} from "semantic-ui-react";
-import {settingsDnD} from "../store/reducers/configurationReducer";
 
 const Header = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const {t} = useTranslation()
 
-    // useEffect(() => {
-    //     axios.get('/api/translation/GetForLangType/en').then(data => console.log(data))
-    // }, [])
+    useEffect(() => {
+        axios.get('/api/translation/GetForLangType/en').then(data => console.log(data))
+    }, [])
 
     const handleSignOut = () => {
         dispatch(logoutRequest())
@@ -31,7 +30,7 @@ const Header = () => {
     }
 
     return (
-        <Menu pointing>
+        <Menu pointing style={{position: 'fixed', left: 0, right: 0, zIndex: 1}}>
             <Menu.Menu position={'left'}>
                 <Menu.Item
                     name={`${t('users')}`}

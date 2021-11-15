@@ -12,13 +12,13 @@ const Table = () => {
     return (
         <Grid>
             <Grid.Row>
-                <Grid.Column>
-                    <Segment textAlign={'right'}>
+                <Grid.Column >
+                    {/*<Segment style={{marginTop: '3rem', position: 'fixed', left: 0, right: 0, zIndex: 1}} textAlign={'left'}>*/}
                         <TableComponent/>
-                    </Segment>
-                    {
-                        chosenConfig.length === 0 ? null : <SettingsConfigurations/>
-                    }
+                    {/*</Segment>*/}
+                        {
+                            chosenConfig.length === 0 ? null : <SettingsConfigurations/>
+                        }
                 </Grid.Column>
             </Grid.Row>
         </Grid>
