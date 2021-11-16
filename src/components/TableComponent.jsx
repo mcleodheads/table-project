@@ -30,7 +30,7 @@ const TableComponent = () => {
 
     return (
         <Dropdown
-            style={{marginTop: '3rem', position: 'fixed', left: 0, right: 0, zIndex: 1, minWidth: 250, maxWidth: 310}}
+            style={{marginTop: '3rem', position: 'fixed', left: 0, right: 0, zIndex: 1, width: 'fit-content'}}
             labeled
             button
             className={'icon'}
