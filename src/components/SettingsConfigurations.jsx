@@ -68,6 +68,7 @@ const SettingsConfigurations = () => {
     return (
         <div style={{marginTop: '8rem', zIndex: 2}}>
             <Table
+                selectable
                 fixed
                 singleLine
                 celled
