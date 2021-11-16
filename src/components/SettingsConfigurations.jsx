@@ -1,16 +1,10 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {useTable, useResizeColumns, useFlexLayout} from "react-table";
-import axios from "axios";
+import {Divider, Loader, Table} from "semantic-ui-react";
 
 import ModalFields from "./ModalFields";
-
-import {
-    Divider, Icon,
-    Loader, Segment,
-    Table
-} from "semantic-ui-react";
 
 const SettingsConfigurations = () => {
     const [open, setOpen] = useState(false)
@@ -66,7 +60,7 @@ const SettingsConfigurations = () => {
     }
 
     return (
-        <div style={{marginTop: '8rem', zIndex: 2}}>
+        <div style={{marginTop: '8rem'}}>
             <Table
                 selectable
                 fixed

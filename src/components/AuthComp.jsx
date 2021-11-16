@@ -4,11 +4,10 @@ import {useHistory} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import Cookies from 'js-cookie'
+import {Dimmer, Form, Grid, Header, Message, Segment} from "semantic-ui-react";
 
 import {HOME_ROUTE} from "../routes/routeConstants";
 import {loginRequest} from "../store/reducers/userAuthReducer";
-
-import {Dimmer, Form, Grid, Header, Message, Segment} from "semantic-ui-react";
 
 export const countryFlags = [
     {key: 'gb eng', value: 'en', flag: 'gb eng', text: 'English'},

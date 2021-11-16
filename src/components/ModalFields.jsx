@@ -1,22 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {
-    Button, Checkbox,
-    Dimmer,
-    Divider, Dropdown,
-    Grid,
-    Header,
-    Input,
-    Item,
-    List,
-    Loader,
-    Modal,
-    Segment,
-    Table
-} from "semantic-ui-react";
+import React, {useEffect} from 'react';
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
+import {Button, Checkbox, Dimmer, Dropdown, Grid, Input, Loader, Modal} from "semantic-ui-react";
+
 import {getModalData} from "../store/reducers/configurationReducer";
-import axios from "axios";
 
 const ModalFields = ({setOpen, open, cell, row}) => {
     const {t} = useTranslation()

@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
+import {Dimmer, Dropdown, Icon, Loader} from "semantic-ui-react";
 
 import {getConfig, getSearchResults, setChosenField} from "../store/reducers/configurationReducer";
 
-import {Button, Dimmer, Dropdown, Icon, Loader, Table} from "semantic-ui-react";
 
 const TableComponent = () => {
     const dispatch = useDispatch()
@@ -27,9 +27,10 @@ const TableComponent = () => {
             </Dimmer>
         )
     }
+
     return (
         <Dropdown
-            style={{marginTop: '3rem', position: 'fixed', left: 0, right: 0, zIndex: 1, minWidth: 250, maxWidth: 320}}
+            style={{marginTop: '3rem', position: 'fixed', left: 0, right: 0, zIndex: 1, minWidth: 250, maxWidth: 310}}
             labeled
             button
             className={'icon'}

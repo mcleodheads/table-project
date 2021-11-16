@@ -5,12 +5,12 @@ import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import Cookies from 'js-cookie'
 import axios from "axios";
+import {Dropdown, Menu} from "semantic-ui-react";
 
 import {logoutRequest} from "../store/reducers/userAuthReducer";
 import {TABLE_ROUTE} from "../routes/routeConstants";
 import {countryFlags} from "./AuthComp";
 
-import {Dropdown, Menu} from "semantic-ui-react";
 
 const Header = () => {
     const dispatch = useDispatch()
