@@ -24,3 +24,17 @@ export async function fetchSearchResults(name) {
 export async function fetchModalData(name, id) {
     return axios.get(`/api/${name}/getById/${id}`, {withCredentials: true})
 }
+
+export async function fetchPopupData(name, config) {
+    return axios.post(`/api/${name}/ids`, config, {withCredentials: true})
+}
+
+export async function fetchSelectorData(name, field) {
+    const config = {
+        filter: {},
+        skip: 0,
+        take: 0,
+        sort: {}
+    }
+    return axios.post(`/api/${name}/forSelect/${field}`, config,{withCredentials: true})
+}

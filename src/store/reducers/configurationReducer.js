@@ -1,5 +1,11 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {fetchAppConfiguration, fetchModalData, fetchSearchResults} from "../../API/API";
+import {
+    fetchAppConfiguration,
+    fetchModalData,
+    fetchPopupData,
+    fetchSearchResults,
+    fetchSelectorData
+} from "../../API/API";
 
 const initialState = {
     isLoading: false,
@@ -10,7 +16,13 @@ const initialState = {
     modalData: {
         isLoading: false,
         data: {},
-    }
+    },
+    filteredItems: {
+        data: [],
+        selectorFields: [],
+        selectorsIsLoading: false,
+        emptyResponse: false,
+    },
 }
 
 export const getConfig = createAsyncThunk(
@@ -37,12 +49,36 @@ export const getSearchResults = createAsyncThunk(
     }
 )
 
-export const getModalData = createAsyncThunk(
+export const getModalData = createAsyncThunk( // data for modal/form window
     'fetchModal',
     async ([name, id], thunkAPI) => {
         try {
             const response = await fetchModalData(name, id)
             return thunkAPI.dispatch(fetchModalReducer(response))
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.message)
+        }
+    }
+)
+
+export const getPopupData = createAsyncThunk( // data for filter columns
+    'fetchPopup',
+    async ([name, config,], thunkAPI) => {
+        try {
+            const response = await fetchPopupData(name, config)
+            return thunkAPI.dispatch(fetchPopupReducer(response,))
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e.message)
+        }
+    }
+)
+
+export const getSelectorsData = createAsyncThunk( // data for filter columns
+    'fetchSelector',
+    async ([name, field], thunkAPI) => {
+        try {
+            const response = await fetchSelectorData(name, field)
+            return thunkAPI.dispatch(fetchSelectorReducer(response))
         } catch (e) {
             return thunkAPI.rejectWithValue(e.message)
         }
@@ -62,8 +98,11 @@ export const configurationSlice = createSlice({
         fetchSearchResultsReducer(state, action) {
             state.searchingResults = action.payload
         },
-        fetchModalReducer(state, action) {
-        }
+        fetchModalReducer(state, action) {},
+        fetchPopupReducer(state, action) {
+            console.log(action)
+        },
+        fetchSelectorReducer(state, action) {}
     },
     extraReducers: {
         [getConfig.pending]: (state) => {
@@ -76,6 +115,7 @@ export const configurationSlice = createSlice({
             state.isLoading = false
             state.error = action.payload
         },
+
         [getSearchResults.pending]: (state) => {
             state.isLoading = true
         },
@@ -87,6 +127,7 @@ export const configurationSlice = createSlice({
             state.isLoading = false
             state.error = action.payload
         },
+
         [getModalData.pending]: (state) => {
             state.modalData.isLoading = true
         },
@@ -97,6 +138,30 @@ export const configurationSlice = createSlice({
         [getModalData.rejected]: (state, action) => {
             state.error = action.payload
         },
+
+        [getPopupData.pending]: (state) => {
+        },
+        [getPopupData.fulfilled]: (state, action) => {
+            state.filteredItems.data = action.payload.payload.data
+            if (action.payload.payload.data.length === 0) {
+                state.filteredItems.emptyResponse = true
+            }
+        },
+        [getPopupData.rejected]: (state, action) => {
+            state.error = action.payload
+        },
+
+        [getSelectorsData.pending]: (state) => {
+            state.filteredItems.selectorsIsLoading = true
+        },
+        [getSelectorsData.fulfilled]: (state, action) => {
+            state.filteredItems.selectorsIsLoading = false
+            state.filteredItems.selectorFields = action.payload.payload.data
+        },
+        [getSelectorsData.rejected]: (state, action) => {
+            state.filteredItems.selectorsIsLoading = false
+            state.error = action.payload
+        },
     }
 })
 
@@ -105,5 +170,7 @@ export const {
     setChosenField,
     fetchSearchResultsReducer,
     fetchModalReducer,
+    fetchPopupReducer,
+    fetchSelectorReducer
 } = configurationSlice.actions
 export default configurationSlice.reducer

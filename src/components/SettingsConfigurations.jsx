@@ -1,15 +1,16 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {useTable, useResizeColumns, useFlexLayout} from "react-table";
-import {Divider, Loader, Table} from "semantic-ui-react";
+import {Divider, Icon, Loader, Popup, Table} from "semantic-ui-react";
 
 import ModalFields from "./ModalFields";
+import FilterColumnTooltip from "./FilterColumnTooltip";
 
 const SettingsConfigurations = () => {
-    const [open, setOpen] = useState(false)
-    const [activeCell, setActiveCell] = useState([])
-    const [activeRow, setActiveRow] = useState({cells: []})
+    const [openModal, setModalOpen] = useState(false);
+    const [activeCell, setActiveCell] = useState([]);
+    const [activeRow, setActiveRow] = useState({cells: []});
     const configuration = useSelector(state => state.configReducer);
     const {t} = useTranslation();
 
@@ -27,9 +28,9 @@ const SettingsConfigurations = () => {
 
     const defaultColumn = React.useMemo(
         () => ({
-            minWidth: Math.round(window.innerWidth * (1 / 100)),
-            width: Math.round(window.innerWidth * (10 / 100)),
-            maxWidth: Math.round(window.innerWidth * (10 / 100)),
+            minWidth: Math.round(window.innerWidth * (10 / 100)),
+            width: Math.round(window.innerWidth * (15 / 100)),
+            maxWidth: Math.round(window.innerWidth * (25 / 100)),
         }), []
     );
 
@@ -52,7 +53,7 @@ const SettingsConfigurations = () => {
     const handleModalOpen = (cell, row) => {
         setActiveRow(row)
         setActiveCell(cell)
-        setOpen(true)
+        setModalOpen(true)
     }
 
     if (configuration.isLoading) {
@@ -79,6 +80,16 @@ const SettingsConfigurations = () => {
                                             <Table.HeaderCell
                                                 {...col.getHeaderProps()}>
                                                 {col.render('Header')}
+                                                <Popup
+                                                    content={<FilterColumnTooltip row={rows} column={col}/>}
+                                                    pinned
+                                                    on={'click'}
+                                                    position={'bottom center'}
+                                                    trigger={<Icon
+                                                        style={{cursor: 'pointer'}}
+                                                        name={'filter'}
+                                                    />}
+                                                />
                                                 <Divider
                                                     {...col.getResizerProps()}
                                                     style={{
@@ -106,7 +117,35 @@ const SettingsConfigurations = () => {
                     style={{userSelect: 'none'}}
                     {...getTableBodyProps()}>
                     {
-                        rows.map(row => {
+                        configuration.filteredItems.data.length !== 0 ? rows.filter(row => configuration.filteredItems.data.includes(row.original.id))
+                            .map(row => {
+                                prepareRow(row)
+                                return (
+                                    <Table.Row
+                                        {...row.getRowProps()}>
+                                        {
+                                            row.cells.map(cell => {
+                                                return (
+                                                    <Table.Cell
+                                                        onClick={() => handleModalOpen(cell, row)}
+                                                        textAlign={"center"}
+                                                        {...cell.getCellProps()}>
+                                                        {
+                                                            cell.value !== null ?
+                                                                cell.value?.name !== undefined ?
+                                                                    `${t(cell.value?.name)}` :
+                                                                    `${Array.isArray(cell.value) ?
+                                                                        (cell.value.map(item => item.name)) :
+                                                                        ((`${t(cell.value)}`))}` :
+                                                                `${t('emptyValue')}`
+                                                        }
+                                                    </Table.Cell>
+                                                )
+                                            })
+                                        }
+                                    </Table.Row>
+                                )
+                            }) : rows.map(row => {
                             prepareRow(row)
                             return (
                                 <Table.Row
@@ -135,9 +174,39 @@ const SettingsConfigurations = () => {
                             )
                         })
                     }
+                    {/*{*/}
+                    {/*    rows.map(row => {*/}
+                    {/*        prepareRow(row)*/}
+                    {/*        return (*/}
+                    {/*            <Table.Row*/}
+                    {/*                {...row.getRowProps()}>*/}
+                    {/*                {*/}
+                    {/*                    row.cells.map(cell => {*/}
+                    {/*                        return (*/}
+                    {/*                            <Table.Cell*/}
+                    {/*                                onClick={() => handleModalOpen(cell, row)}*/}
+                    {/*                                textAlign={"center"}*/}
+                    {/*                                {...cell.getCellProps()}>*/}
+                    {/*                                {*/}
+                    {/*                                    cell.value !== null ?*/}
+                    {/*                                        cell.value?.name !== undefined ?*/}
+                    {/*                                            `${t(cell.value?.name)}` :*/}
+                    {/*                                            `${Array.isArray(cell.value) ?*/}
+                    {/*                                                (cell.value.map(item => item.name)) :*/}
+                    {/*                                                ((`${t(cell.value)}`))}` :*/}
+                    {/*                                        `${t('emptyValue')}`*/}
+                    {/*                                }*/}
+                    {/*                            </Table.Cell>*/}
+                    {/*                        )*/}
+                    {/*                    })*/}
+                    {/*                }*/}
+                    {/*            </Table.Row>*/}
+                    {/*        )*/}
+                    {/*    })*/}
+                    {/*}*/}
                 </Table.Body>
             </Table>
-            <ModalFields row={activeRow} cell={activeCell} setOpen={setOpen} open={open}/>
+            <ModalFields row={activeRow} cell={activeCell} setOpen={setModalOpen} open={openModal}/>
         </div>
     );
 };
