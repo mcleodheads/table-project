@@ -99,9 +99,7 @@ export const configurationSlice = createSlice({
             state.searchingResults = action.payload
         },
         fetchModalReducer(state, action) {},
-        fetchPopupReducer(state, action) {
-            console.log(action)
-        },
+        fetchPopupReducer(state, action) {},
         fetchSelectorReducer(state, action) {}
     },
     extraReducers: {

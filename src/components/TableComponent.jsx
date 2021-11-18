@@ -5,7 +5,6 @@ import {Dimmer, Dropdown, Icon, Loader} from "semantic-ui-react";
 
 import {getConfig, getSearchResults, setChosenField} from "../store/reducers/configurationReducer";
 
-
 const TableComponent = () => {
     const dispatch = useDispatch()
     const configuration = useSelector(state => state.configReducer)

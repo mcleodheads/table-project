@@ -1,25 +1,19 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import Cookies from 'js-cookie'
-import axios from "axios";
 import {Dropdown, Menu} from "semantic-ui-react";
 
 import {logoutRequest} from "../store/reducers/userAuthReducer";
 import {TABLE_ROUTE} from "../routes/routeConstants";
 import {countryFlags} from "./AuthComp";
 
-
 const Header = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const {t} = useTranslation()
-
-    useEffect(() => {
-        axios.get('/api/translation/GetForLangType/en').then(data => console.log(data))
-    }, [])
 
     const handleSignOut = () => {
         dispatch(logoutRequest())

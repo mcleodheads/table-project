@@ -9,11 +9,13 @@ const ModalFields = ({setOpen, open, cell, row}) => {
     const {t} = useTranslation()
     const configuration = useSelector(state => state.configReducer)
     const dispatch = useDispatch()
+
     useEffect(() => {
         if (open) {
             dispatch(getModalData([configuration.chosenConfig[0].name, cell.row.original.id]))
         }
     }, [open])
+
     if (configuration.isLoading) {
         return (
             <Dimmer active inverted>
