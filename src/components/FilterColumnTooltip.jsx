@@ -11,16 +11,10 @@ const FilterColumnTooltip = ({column, row}) => {
     const dispatch = useDispatch()
     const {t} = useTranslation()
     const fieldType = column.type
-
     useEffect(() => {
         const {id} = column
         const config = {
-            filter: {
-                [id]: value,
-            },
-            skip: 0,
-            take: 0,
-            sort: {}
+            filter: {[id]: value,},
         }
         dispatch(getPopupData([configuration.chosenConfig[0].name, config]))
     }, [value])

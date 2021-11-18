@@ -1,18 +1,25 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {useTable, useResizeColumns, useFlexLayout} from "react-table";
 import {Divider, Icon, Loader, Popup, Table} from "semantic-ui-react";
 
 import ModalFields from "./ModalFields";
 import FilterColumnTooltip from "./FilterColumnTooltip";
+import {getPopupData} from "../store/reducers/configurationReducer";
 
 const SettingsConfigurations = () => {
     const [openModal, setModalOpen] = useState(false);
     const [activeCell, setActiveCell] = useState([]);
     const [activeRow, setActiveRow] = useState({cells: []});
     const configuration = useSelector(state => state.configReducer);
+    const dispatch = useDispatch()
     const {t} = useTranslation();
+
+    useEffect(() => {
+        const config = {filter: {},}
+        dispatch(getPopupData([configuration.chosenConfig[0].name, config]))
+    }, [configuration.chosenConfig[0].name])
 
     const columns = useMemo(() => configuration.chosenConfig[0].columns.map(item => {
         return {
@@ -116,8 +123,10 @@ const SettingsConfigurations = () => {
                 <Table.Body
                     style={{userSelect: 'none'}}
                     {...getTableBodyProps()}>
+
                     {
-                        configuration.filteredItems.data.length !== 0 ? rows.filter(row => configuration.filteredItems.data.includes(row.original.id))
+                        rows
+                            .filter(row => configuration.filteredItems.data.includes(row.original.id))
                             .map(row => {
                                 prepareRow(row)
                                 return (
@@ -145,65 +154,8 @@ const SettingsConfigurations = () => {
                                         }
                                     </Table.Row>
                                 )
-                            }) : rows.map(row => {
-                            prepareRow(row)
-                            return (
-                                <Table.Row
-                                    {...row.getRowProps()}>
-                                    {
-                                        row.cells.map(cell => {
-                                            return (
-                                                <Table.Cell
-                                                    onClick={() => handleModalOpen(cell, row)}
-                                                    textAlign={"center"}
-                                                    {...cell.getCellProps()}>
-                                                    {
-                                                        cell.value !== null ?
-                                                            cell.value?.name !== undefined ?
-                                                                `${t(cell.value?.name)}` :
-                                                                `${Array.isArray(cell.value) ?
-                                                                    (cell.value.map(item => item.name)) :
-                                                                    ((`${t(cell.value)}`))}` :
-                                                            `${t('emptyValue')}`
-                                                    }
-                                                </Table.Cell>
-                                            )
-                                        })
-                                    }
-                                </Table.Row>
-                            )
-                        })
+                            })
                     }
-                    {/*{*/}
-                    {/*    rows.map(row => {*/}
-                    {/*        prepareRow(row)*/}
-                    {/*        return (*/}
-                    {/*            <Table.Row*/}
-                    {/*                {...row.getRowProps()}>*/}
-                    {/*                {*/}
-                    {/*                    row.cells.map(cell => {*/}
-                    {/*                        return (*/}
-                    {/*                            <Table.Cell*/}
-                    {/*                                onClick={() => handleModalOpen(cell, row)}*/}
-                    {/*                                textAlign={"center"}*/}
-                    {/*                                {...cell.getCellProps()}>*/}
-                    {/*                                {*/}
-                    {/*                                    cell.value !== null ?*/}
-                    {/*                                        cell.value?.name !== undefined ?*/}
-                    {/*                                            `${t(cell.value?.name)}` :*/}
-                    {/*                                            `${Array.isArray(cell.value) ?*/}
-                    {/*                                                (cell.value.map(item => item.name)) :*/}
-                    {/*                                                ((`${t(cell.value)}`))}` :*/}
-                    {/*                                        `${t('emptyValue')}`*/}
-                    {/*                                }*/}
-                    {/*                            </Table.Cell>*/}
-                    {/*                        )*/}
-                    {/*                    })*/}
-                    {/*                }*/}
-                    {/*            </Table.Row>*/}
-                    {/*        )*/}
-                    {/*    })*/}
-                    {/*}*/}
                 </Table.Body>
             </Table>
             <ModalFields row={activeRow} cell={activeCell} setOpen={setModalOpen} open={openModal}/>
