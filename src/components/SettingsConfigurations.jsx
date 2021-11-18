@@ -68,11 +68,11 @@ const SettingsConfigurations = () => {
     }
 
     return (
-        <div style={{marginTop: '8rem'}}>
+        <div style={{marginTop: '8rem', width: 'fit-content'}}>
             <Table
                 selectable
-                fixed
-                singleLine
+                // fixed
+                // singleLine
                 celled
                 {...getTableProps()}>
                 <Table.Header
