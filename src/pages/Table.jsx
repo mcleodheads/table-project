@@ -13,7 +13,7 @@ const Table = () => {
                 <Grid.Column>
                     <TableComponent/>
                     {
-                        chosenConfig.length === 0 ? null : <SettingsConfigurations/>
+                        chosenConfig.length === 0 ? null : <SettingsConfigurations />
                     }
                 </Grid.Column>
             </Grid.Row>

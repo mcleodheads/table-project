@@ -2,21 +2,34 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {useTable, useResizeColumns, useFlexLayout} from "react-table";
-import {Divider, Icon, Loader, Popup, Table} from "semantic-ui-react";
+import {Dimmer, Divider, Icon, Loader, Popup, Table} from "semantic-ui-react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import ModalFields from "./ModalFields";
 import FilterColumnTooltip from "./FilterColumnTooltip";
 import {getPopupData} from "../store/reducers/configurationReducer";
 
 const SettingsConfigurations = () => {
+    const configuration = useSelector(state => state.configReducer);
     const [openModal, setModalOpen] = useState(false);
     const [activeCell, setActiveCell] = useState([]);
     const [activeRow, setActiveRow] = useState({cells: []});
-    const configuration = useSelector(state => state.configReducer);
+    const [start, setStart] = useState(20)
+    const [scrollingData, setScrollingData] = useState(configuration.searchingResults)
     const dispatch = useDispatch()
     const {t} = useTranslation();
 
+    const updateNextData = () => {
+        if (configuration.searchingResults.length >= start + 3) {
+            setScrollingData(scrollingData.concat(Array.from(configuration.searchingResults.slice(start, start + 3))))
+        }
+        console.log('here with start: ' + start)
+        setStart(prev => prev + 3)
+    }
+    console.log(scrollingData)
+
     useEffect(() => {
+        setStart(20)
         const config = {filter: {},}
         dispatch(getPopupData([configuration.chosenConfig[0].name, config]))
     }, [configuration.chosenConfig[0].name])
@@ -30,8 +43,8 @@ const SettingsConfigurations = () => {
     }), [configuration, `${t('Permission.FieldsSettings')}`])
 
     const data = useMemo(() => {
-        return configuration.searchingResults
-    }, [configuration.searchingResults, `${t('Permission.FieldsSettings')}`])
+        return [...configuration.searchingResults.slice(0, 20), ...scrollingData]
+    }, [scrollingData, configuration.searchingResults, `${t('Permission.FieldsSettings')}`])
 
     const defaultColumn = React.useMemo(
         () => ({
@@ -68,7 +81,18 @@ const SettingsConfigurations = () => {
     }
 
     return (
-        <div style={{marginTop: '8rem'}}>
+        <div style={{marginTop: '8rem', width: '100vw'}}>
+            <InfiniteScroll
+                next={updateNextData}
+                hasMore={true}
+                loader={
+                    <Dimmer inverted>
+                        <Loader active>
+                            {t('data_loading')}
+                        </Loader>
+                    </Dimmer>
+                }
+                dataLength={rows.length}>
             <Table
                 selectable
                 celled
@@ -122,40 +146,41 @@ const SettingsConfigurations = () => {
                     style={{userSelect: 'none'}}
                     {...getTableBodyProps()}>
 
-                    {
-                        rows
-                            .filter(row => configuration.filteredItems.data.includes(row.original.id))
-                            .map(row => {
-                                prepareRow(row)
-                                return (
-                                    <Table.Row
-                                        {...row.getRowProps()}>
-                                        {
-                                            row.cells.map(cell => {
-                                                return (
-                                                    <Table.Cell
-                                                        onClick={() => handleModalOpen(cell, row)}
-                                                        textAlign={"center"}
-                                                        {...cell.getCellProps()}>
-                                                        {
-                                                            cell.value !== null ?
-                                                                cell.value?.name !== undefined ?
-                                                                    `${t(cell.value?.name)}` :
-                                                                    `${Array.isArray(cell.value) ?
-                                                                        (cell.value.map(item => item.name)) :
-                                                                        ((`${t(cell.value)}`))}` :
-                                                                `${t('emptyValue')}`
-                                                        }
-                                                    </Table.Cell>
-                                                )
-                                            })
-                                        }
-                                    </Table.Row>
-                                )
-                            })
-                    }
+                        {
+                            rows
+                                .filter(row => configuration.filteredItems.data.includes(row.original.id))
+                                .map(row => {
+                                    prepareRow(row)
+                                    return (
+                                        <Table.Row
+                                            {...row.getRowProps()}>
+                                            {
+                                                row.cells.map(cell => {
+                                                    return (
+                                                        <Table.Cell
+                                                            onClick={() => handleModalOpen(cell, row)}
+                                                            textAlign={"center"}
+                                                            {...cell.getCellProps()}>
+                                                            {
+                                                                cell.value !== null ?
+                                                                    cell.value?.name !== undefined ?
+                                                                        `${t(cell.value?.name)}` :
+                                                                        `${Array.isArray(cell.value) ?
+                                                                            (cell.value.map(item => item.name)) :
+                                                                            ((`${t(cell.value)}`))}` :
+                                                                    `${t('emptyValue')}`
+                                                            }
+                                                        </Table.Cell>
+                                                    )
+                                                })
+                                            }
+                                        </Table.Row>
+                                    )
+                                })
+                        }
                 </Table.Body>
             </Table>
+            </InfiniteScroll>
             <ModalFields row={activeRow} cell={activeCell} setOpen={setModalOpen} open={openModal}/>
         </div>
     );
