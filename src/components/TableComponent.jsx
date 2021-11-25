@@ -28,33 +28,34 @@ const TableComponent = () => {
     }
 
     return (
-        <Dropdown
-            style={{marginTop: '3rem', position: 'fixed', left: 0, right: 0, zIndex: 1, width: 'fit-content'}}
-            labeled
-            button
-            className={'icon'}
-            closeOnBlur
-            trigger={(<span>
+        <div className={'dropdown-wrapper'}>
+            <Dropdown
+                labeled
+                button
+                className={'icon'}
+                closeOnBlur
+                trigger={(<span>
                 {
                     configuration.chosenConfig.length !== 0 ?
                         t(configuration.chosenConfig[0].name) :
                         t('Permission.FieldsSettings')
                 }
-                &nbsp;<Icon name={'filter'}/></span>)}
-            scrolling>
-            <Dropdown.Menu>
-                {
-                    configuration.config.map(header => (
-                        <Dropdown.Item
-                            onClick={() => onChangeHandler(header)}
-                            text={`${t(header.name)}`}
-                            key={header.name}
-                            value={`${t(header.name)}`}
-                        />
-                    ))
-                }
-            </Dropdown.Menu>
-        </Dropdown>
+                    &nbsp;<Icon name={'filter'}/></span>)}
+                scrolling>
+                <Dropdown.Menu>
+                    {
+                        configuration.config.map(header => (
+                            <Dropdown.Item
+                                onClick={() => onChangeHandler(header)}
+                                text={`${t(header.name)}`}
+                                key={header.name}
+                                value={`${t(header.name)}`}
+                            />
+                        ))
+                    }
+                </Dropdown.Menu>
+            </Dropdown>
+        </div>
     )
 
 

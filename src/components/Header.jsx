@@ -24,7 +24,7 @@ const Header = () => {
     }
 
     return (
-        <Menu pointing style={{position: 'fixed', left: 0, right: 0, zIndex: 1}}>
+        <Menu pointing className={'header-wrapper'}>
             <Menu.Menu position={'left'}>
                 <Menu.Item
                     name={`${t('users')}`}

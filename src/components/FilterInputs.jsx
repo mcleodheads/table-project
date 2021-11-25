@@ -31,7 +31,7 @@ const FilterInputs = ({type, setValue, value, column}) => {
                 <Form>
                     {
                         configuration.filteredItems.selectorsIsLoading ? (
-                            <Segment style={{width: '100px', height: 100}}>
+                            <Segment className={'filter-stub'}>
                                 <Loader active>
                                     {t('data_loading')}
                                 </Loader>

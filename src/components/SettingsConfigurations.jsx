@@ -79,7 +79,7 @@ const SettingsConfigurations = () => {
     }
 
     return (
-        <div style={{marginTop: '8rem', width: '100vw'}}>
+        <div className={'table-wrapper'}>
             <InfiniteScroll
                 next={updateNextData}
                 hasMore={true}
@@ -91,59 +91,46 @@ const SettingsConfigurations = () => {
                     </Dimmer>
                 }
                 dataLength={rows.length}>
-            <Table
-                selectable
-                celled
-                {...getTableProps()}>
-                <Table.Header
-                    style={{userSelect: 'none'}}>
-                    {
-                        headerGroups.map(headerGroup => (
-                            <Table.Row
-                                {...headerGroup.getHeaderGroupProps()}>
-                                {
-                                    headerGroup.headers.map(col => {
-                                        return (
-                                            <Table.HeaderCell
-                                                {...col.getHeaderProps()}>
-                                                {col.render('Header')}
-                                                <Popup
-                                                    content={<FilterColumnTooltip row={rows} column={col}/>}
-                                                    pinned
-                                                    on={'click'}
-                                                    position={'bottom center'}
-                                                    trigger={<Icon
-                                                        style={{cursor: 'pointer'}}
-                                                        name={'filter'}
-                                                    />}
-                                                />
-                                                <Divider
-                                                    {...col.getResizerProps()}
-                                                    style={{
-                                                        display: 'inline-block',
-                                                        width: 10,
-                                                        marginTop: -1,
-                                                        height: '100%',
-                                                        position: 'absolute',
-                                                        right: 0,
-                                                        top: 0,
-                                                        transform: 'translateX(50%)',
-                                                        zIndex: 1,
-                                                        touchAction: 'none',
-                                                        cursor: 'col-resize'
-                                                    }}/>
-                                            </Table.HeaderCell>
-                                        )
-                                    })
-                                }
-                            </Table.Row>
-                        ))
-                    }
-                </Table.Header>
-                <Table.Body
-                    style={{userSelect: 'none'}}
-                    {...getTableBodyProps()}>
-
+                <Table
+                    selectable
+                    celled
+                    {...getTableProps()}>
+                    <Table.Header
+                        className={'table-header'}>
+                        {
+                            headerGroups.map(headerGroup => (
+                                <Table.Row
+                                    {...headerGroup.getHeaderGroupProps()}>
+                                    {
+                                        headerGroup.headers.map(col => {
+                                            return (
+                                                <Table.HeaderCell
+                                                    {...col.getHeaderProps()}>
+                                                    {col.render('Header')}
+                                                    <Popup
+                                                        content={<FilterColumnTooltip row={rows} column={col}/>}
+                                                        pinned
+                                                        on={'click'}
+                                                        position={'bottom center'}
+                                                        trigger={<Icon
+                                                            className={'table-popup-trigger'}
+                                                            name={'filter'}
+                                                        />}
+                                                    />
+                                                    <Divider
+                                                        className={'table-row-divider'}
+                                                        {...col.getResizerProps()}/>
+                                                </Table.HeaderCell>
+                                            )
+                                        })
+                                    }
+                                </Table.Row>
+                            ))
+                        }
+                    </Table.Header>
+                    <Table.Body
+                        className={'table-body'}
+                        {...getTableBodyProps()}>
                         {
                             rows
                                 .filter(row => configuration.filteredItems.data.includes(row.original.id))
@@ -176,8 +163,8 @@ const SettingsConfigurations = () => {
                                     )
                                 })
                         }
-                </Table.Body>
-            </Table>
+                    </Table.Body>
+                </Table>
             </InfiniteScroll>
             <ModalFields row={activeRow} cell={activeCell} setOpen={setModalOpen} open={openModal}/>
         </div>

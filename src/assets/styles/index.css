@@ -1,0 +1,72 @@
+/*AUTH START*/
+.auth-wrapper {
+    height: 100vh;
+}
+
+.auth-container {
+    max-width: 450px;
+}
+
+.auth-form-btn {
+    width: 100%;
+}
+/*AUTH END*/
+
+/*HEADER START*/
+.header-wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+/*HEADER END*/
+
+/*TABLE START*/
+
+/*DROPDOWN START*/
+.dropdown-wrapper {
+    margin-top: 3rem;
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    width: fit-content;
+
+}
+/*DROPDOWN END*/
+
+/*TABLE BODY START*/
+.table-wrapper {
+    margin-top: 8rem;
+    width: 100vw;
+}
+.table-header {
+    user-select: none;
+}
+.table-popup-trigger {
+    cursor: pointer;
+}
+.table-row-divider {
+    display: inline-block;
+    width: 10px;
+    margin-top: -1px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateX(50%);
+    z-index: 1;
+    touch-action: none;
+    cursor: col-resize;
+}
+
+.table-body {
+    user-select: none;
+}
+/*TABLE BODY END*/
+
+/*TABLE END*/
+.filter-stub {
+    width: 100px;
+    height: 100px;
+}

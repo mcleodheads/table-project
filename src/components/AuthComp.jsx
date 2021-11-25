@@ -45,8 +45,8 @@ const AuthComp = () => {
 
     return (
         <Dimmer.Dimmable blurring dimmed={isLoading}>
-            <Grid textAlign={'center'} style={{height: '100vh'}} verticalAlign={'middle'}>
-                <Grid.Column style={{maxWidth: 450}}>
+            <Grid textAlign={'center'} className={'auth-wrapper'} verticalAlign={'middle'}>
+                <Grid.Column className={'auth-container'}>
                     <Header as={'h2'} color={'blue'} textAlign={'center'}>
                         {t('login')}
                     </Header>
@@ -84,7 +84,7 @@ const AuthComp = () => {
                                 />
                                 <Form.Button
                                     width={12}
-                                    style={{width: '100%'}}
+                                    className={'auth-form-btn'}
                                     color={'blue'}
                                     onClick={handleLogin}
                                     content={`${t(`login_btn`)}`}
@@ -108,7 +108,7 @@ const AuthComp = () => {
                         isEmptyFields ? (
                             <Message color={'red'}>
                                 {password.length === 0 ? (`${t('User.Password.ValueIsRequired')}`) :
-                                    (`${t('User.UserName.ValueIsRequired')}`) }
+                                    (`${t('User.UserName.ValueIsRequired')}`)}
                             </Message>
                         ) : null
                     }
