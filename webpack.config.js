@@ -15,7 +15,6 @@ module.exports = {
         }
     },
     devServer: {
-        port: 8008,
         historyApiFallback: true,
         contentBase: path.join(__dirname, "src"),
         proxy: {
