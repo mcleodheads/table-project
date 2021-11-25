@@ -30,7 +30,7 @@ const FilterInputs = ({type, setValue, value, column}) => {
             return (
                 <Form>
                     {
-                        configuration.filteredItems.isLoading ? (
+                        configuration.filteredItems.selectorsIsLoading ? (
                             <Segment style={{width: '100px', height: 100}}>
                                 <Loader active>
                                     {t('data_loading')}

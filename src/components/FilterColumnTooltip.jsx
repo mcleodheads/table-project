@@ -5,7 +5,7 @@ import {Item} from "semantic-ui-react";
 import {getPopupData, getSelectorsData} from "../store/reducers/configurationReducer";
 import FilterInputs from "./FilterInputs";
 
-const FilterColumnTooltip = ({column, row}) => {
+const FilterColumnTooltip = ({column}) => {
     const [value, setValue] = useState('')
     const configuration = useSelector(state => state.configReducer)
     const dispatch = useDispatch()
