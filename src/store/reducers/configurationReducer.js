@@ -29,8 +29,7 @@ export const getConfig = createAsyncThunk(
     'fetchConfig',
     async (_, thunkAPI) => {
         try {
-            const response = await fetchAppConfiguration()
-            return thunkAPI.dispatch(fetchConfigReducer(response.data))
+            return await fetchAppConfiguration()
         } catch (e) {
             return thunkAPI.rejectWithValue(e.message)
         }
@@ -41,8 +40,7 @@ export const getSearchResults = createAsyncThunk(
     'fetchResults',
     async ({name}, thunkAPI) => {
         try {
-            const response = await fetchSearchResults(name)
-            return thunkAPI.dispatch(fetchSearchResultsReducer(response.data.items))
+            return await fetchSearchResults(name)
         } catch (e) {
             return thunkAPI.rejectWithValue(e.message)
         }
@@ -53,32 +51,29 @@ export const getModalData = createAsyncThunk( // data for modal/form window
     'fetchModal',
     async ([name, id], thunkAPI) => {
         try {
-            const response = await fetchModalData(name, id)
-            return thunkAPI.dispatch(fetchModalReducer(response))
+            return await fetchModalData(name, id)
         } catch (e) {
             return thunkAPI.rejectWithValue(e.message)
         }
     }
 )
 
-export const getPopupData = createAsyncThunk( // data for filter columns
+export const getPopupData = createAsyncThunk(
     'fetchPopup',
     async ([name, config,], thunkAPI) => {
         try {
-            const response = await fetchPopupData(name, config)
-            return thunkAPI.dispatch(fetchPopupReducer(response,))
+            return await fetchPopupData(name, config)
         } catch (e) {
             return thunkAPI.rejectWithValue(e.message)
         }
     }
 )
 
-export const getSelectorsData = createAsyncThunk( // data for filter columns
+export const getSelectorsData = createAsyncThunk(
     'fetchSelector',
     async ([name, field], thunkAPI) => {
         try {
-            const response = await fetchSelectorData(name, field)
-            return thunkAPI.dispatch(fetchSelectorReducer(response))
+            return await fetchSelectorData(name, field)
         } catch (e) {
             return thunkAPI.rejectWithValue(e.message)
         }
@@ -89,25 +84,17 @@ export const configurationSlice = createSlice({
     name: 'configuration',
     initialState,
     reducers: {
-        fetchConfigReducer(state, action) {
-            state.config = action.payload.dictionaries
-        },
         setChosenField(state, action) {
             state.chosenConfig = [action.payload]
         },
-        fetchSearchResultsReducer(state, action) {
-            state.searchingResults = action.payload
-        },
-        fetchModalReducer(state, action) {},
-        fetchPopupReducer(state, action) {},
-        fetchSelectorReducer(state, action) {}
     },
     extraReducers: {
         [getConfig.pending]: (state) => {
             state.isLoading = true
         },
-        [getConfig.fulfilled]: (state) => {
+        [getConfig.fulfilled]: (state, {payload}) => {
             state.isLoading = false
+            state.config = payload.data.dictionaries
         },
         [getConfig.rejected]: (state, action) => {
             state.isLoading = false
@@ -117,9 +104,9 @@ export const configurationSlice = createSlice({
         [getSearchResults.pending]: (state) => {
             state.isLoading = true
         },
-        [getSearchResults.fulfilled]: (state, action) => {
+        [getSearchResults.fulfilled]: (state, {payload}) => {
             state.isLoading = false
-            state.searchingResults = action.payload.payload
+            state.searchingResults = payload.data.items
         },
         [getSearchResults.rejected]: (state, action) => {
             state.isLoading = false
@@ -129,19 +116,18 @@ export const configurationSlice = createSlice({
         [getModalData.pending]: (state) => {
             state.modalData.isLoading = true
         },
-        [getModalData.fulfilled]: (state, action) => {
+        [getModalData.fulfilled]: (state, {payload}) => {
             state.modalData.isLoading = false
-            state.modalData.data = action.payload.payload.data
+            state.modalData.data = payload.data
         },
         [getModalData.rejected]: (state, action) => {
             state.error = action.payload
         },
 
-        [getPopupData.pending]: (state) => {
-        },
-        [getPopupData.fulfilled]: (state, action) => {
-            state.filteredItems.data = action.payload.payload.data
-            if (action.payload.payload.data.length === 0) {
+        [getPopupData.pending]: () => {},
+        [getPopupData.fulfilled]: (state, {payload}) => {
+            state.filteredItems.data = payload.data
+            if (payload.data.length === 0) {
                 state.filteredItems.emptyResponse = true
             }
         },
@@ -152,9 +138,9 @@ export const configurationSlice = createSlice({
         [getSelectorsData.pending]: (state) => {
             state.filteredItems.selectorsIsLoading = true
         },
-        [getSelectorsData.fulfilled]: (state, action) => {
+        [getSelectorsData.fulfilled]: (state, {payload}) => {
             state.filteredItems.selectorsIsLoading = false
-            state.filteredItems.selectorFields = action.payload.payload.data
+            state.filteredItems.selectorFields = payload.data
         },
         [getSelectorsData.rejected]: (state, action) => {
             state.filteredItems.selectorsIsLoading = false
@@ -163,12 +149,5 @@ export const configurationSlice = createSlice({
     }
 })
 
-export const {
-    fetchConfigReducer,
-    setChosenField,
-    fetchSearchResultsReducer,
-    fetchModalReducer,
-    fetchPopupReducer,
-    fetchSelectorReducer
-} = configurationSlice.actions
+export const {setChosenField} = configurationSlice.actions
 export default configurationSlice.reducer
