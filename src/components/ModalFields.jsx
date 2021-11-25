@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Button, Checkbox, Dimmer, Dropdown, Grid, Input, Loader, Modal} from "semantic-ui-react";
 
 import {getModalData} from "../store/reducers/configurationReducer";
+import ModalInputs from "./ModalInputs";
 
 const ModalFields = ({setOpen, open, cell, row}) => {
     const {t} = useTranslation()
@@ -45,36 +46,20 @@ const ModalFields = ({setOpen, open, cell, row}) => {
                                                     <Grid.Column floated={'right'} textAlign={'right'} width={10}>
                                                         {
                                                             cell.column.type === 'Boolean' ? (
-                                                                <Checkbox
-                                                                    defaultChecked={cell.value}
-                                                                    toggle
-                                                                />
+                                                                <ModalInputs type={cell.column.type} cell={cell} />
                                                             ) : cell.column.type === 'Number' ||
                                                             cell.column.type === 'Integer' ? (
-                                                                <Input
-                                                                    type={'number'}
-                                                                    placeholder={`${cell.value}`}
-                                                                />
+                                                                <ModalInputs type={cell.column.type} cell={cell} />
+
                                                             ) : cell.column.type === 'Enum' ||
                                                             cell.column.type === 'Select' ? (
-                                                                <Dropdown
-                                                                    options={[{value: '1', key: '1', text: '1'}]}
-                                                                    selection
-                                                                    placeholder={cell.value?.name ? (
-                                                                        `${cell.value?.name}`
-                                                                    ) : null}
-                                                                />
+                                                                <ModalInputs type={cell.column.type} cell={cell} />
+
                                                             ) : cell.column.type === 'MultiSelect' ? (
-                                                                <Dropdown
-                                                                    multiple
-                                                                    options={[{value: '1', key: '1', text: '1'}]}
-                                                                    selection
-                                                                    placeholder={cell.value?.name ? (
-                                                                        `${cell.value?.name}`
-                                                                    ) : null}
-                                                                />
+                                                                <ModalInputs type={cell.column.type} cell={cell} />
+
                                                             ) : (
-                                                                <Input placeholder={`${cell.value}`}/>
+                                                                <ModalInputs type={cell.column.type} cell={cell} />
                                                             )
                                                         }
                                                     </Grid.Column>
