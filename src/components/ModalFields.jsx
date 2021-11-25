@@ -44,24 +44,7 @@ const ModalFields = ({setOpen, open, cell, row}) => {
                                                         {cell.column.Header}
                                                     </Grid.Column>
                                                     <Grid.Column floated={'right'} textAlign={'right'} width={10}>
-                                                        {
-                                                            cell.column.type === 'Boolean' ? (
-                                                                <ModalInputs type={cell.column.type} cell={cell} />
-                                                            ) : cell.column.type === 'Number' ||
-                                                            cell.column.type === 'Integer' ? (
-                                                                <ModalInputs type={cell.column.type} cell={cell} />
-
-                                                            ) : cell.column.type === 'Enum' ||
-                                                            cell.column.type === 'Select' ? (
-                                                                <ModalInputs type={cell.column.type} cell={cell} />
-
-                                                            ) : cell.column.type === 'MultiSelect' ? (
-                                                                <ModalInputs type={cell.column.type} cell={cell} />
-
-                                                            ) : (
-                                                                <ModalInputs type={cell.column.type} cell={cell} />
-                                                            )
-                                                        }
+                                                        <ModalInputs type={cell.column.type} cell={cell} />
                                                     </Grid.Column>
                                                 </Grid.Row>
                                             </Grid>

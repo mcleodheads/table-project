@@ -5,9 +5,11 @@ const ModalInputs = ({type, cell}) => {
     switch (type) {
         case 'Boolean':
             return <Checkbox defaultChecked={cell.value} toggle/>
-        case 'Number' || 'Integer':
+        case 'Number':
+        case 'Integer':
             return <Input type={'number'} placeholder={`${cell.value}`}/>
-        case 'Select' || 'Enum':
+        case 'Select':
+        case 'Enum':
             return <Dropdown
                 options={[{value: '1', key: '1', text: '1'}]}
                 selection
