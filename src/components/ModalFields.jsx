@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {Button, Checkbox, Dimmer, Dropdown, Grid, Input, Loader, Modal} from "semantic-ui-react";
+import {Button, Dimmer, Grid, Loader, Modal} from "semantic-ui-react";
 
 import {getModalData} from "../store/reducers/configurationReducer";
 import ModalInputs from "./ModalInputs";

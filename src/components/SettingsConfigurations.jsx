@@ -23,10 +23,8 @@ const SettingsConfigurations = () => {
         if (configuration.searchingResults.length >= start + 3) {
             setScrollingData(scrollingData.concat(Array.from(configuration.searchingResults.slice(start, start + 3))))
         }
-        console.log('here with start: ' + start)
         setStart(prev => prev + 3)
     }
-    console.log(scrollingData)
 
     useEffect(() => {
         setStart(20)
