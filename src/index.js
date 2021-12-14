@@ -30,6 +30,8 @@ i18n
         }
     })
 
+console.log(i18n)
+
 ReactDOM.render(
     <Suspense fallback={
         <Segment>
